@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('authors', function (Blueprint $table) {
+        Schema::create('borrow_records', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('bio')->nullable();
-            $table->date('birthdate')->nullable();
-            $table->timestamps();
+            $table->string('user_id')->unique();
+            $table->string('book_id')->unique();
+            $table->dateTime('borrowed_at');
+            $table->dateTime('due_at');
+            $table->dateTime('returned_at')->nullable();
         });
     }
 
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('authors');
+        Schema::dropIfExists('borrow_records');
     }
 };
