@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('isbn')->unique();
             $table->date('published_date');
-            $table->string('author_id')->unique();
-            $table->string('status');
+            $table->integer('author_id');
+            $table->enum('status', ['Available', 'Borrowed']);
             $table->timestamps();
         });
     }
