@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers\api\v1;
 
-use App\Models\Author;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreAuthorRequest;
-use App\Http\Requests\UpdateAuthorRequest;
 
-class AuthorController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $authors = Author::all(); // Fetch all authors
-        return response()->json($authors);
+        //
     }
 
     /**
@@ -29,7 +26,7 @@ class AuthorController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAuthorRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -37,7 +34,7 @@ class AuthorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Author $author)
+    public function show(string $id)
     {
         //
     }
@@ -45,7 +42,7 @@ class AuthorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Author $author)
+    public function edit(string $id)
     {
         //
     }
@@ -53,7 +50,7 @@ class AuthorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAuthorRequest $request, Author $author)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -61,7 +58,7 @@ class AuthorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Author $author)
+    public function destroy(string $id)
     {
         //
     }
