@@ -2,64 +2,85 @@
 
 namespace App\Http\Controllers\api\v1;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\v1\UserResource;
+use App\Http\Requests\v1\StoreUserRequest;
+use App\Http\Requests\v1\UpdateUserRequest;
 
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the user resource.
      */
     public function index()
     {
-        //
+        $users = User::paginate();
+        return UserResource::collection($users);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Store a newly created user resource in storage.
      */
-    public function create()
+    public function store(StoreUserRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+        $validatedData['password'] = Hash::make($validatedData['password']);
+
+        $user = User::create($validatedData);
+        return new UserResource($user);
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
+     * Display the specified user resource.
      */
     public function show(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        return new UserResource($user);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update the specified user resource in storage.
      */
-    public function edit(string $id)
+    public function update(UpdateUserRequest $request, string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $validatedData = $request->validated();
+
+        if (!empty($validatedData['password'])) {
+            $validatedData['password'] = Hash::make($validatedData['password']);
+        }
+
+        $user->update($validatedData);
+        return new UserResource($user);
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
+     * Remove the specified user resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json(['message' => 'User deleted successfully.']);
+    }
+
+    /**
+     * Authenticate a user.
+     */
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+
+        if (auth()->attempt($credentials)) {
+            $user = auth()->user();
+            return new UserResource($user);
+        } else {
+            return response()->json(['error' => 'Invalid credentials'], 401);
+        }
     }
 }

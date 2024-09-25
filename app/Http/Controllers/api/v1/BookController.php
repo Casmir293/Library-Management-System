@@ -81,7 +81,6 @@ class BookController extends Controller
 
         Record::create([
             'user_id' => Auth::id(),
-            // 'user_id' => 1,
             'book_id' => $book->id,
             'borrowed_at' => Carbon::now(),
             'due_at' => Carbon::now()->addDays(14),
