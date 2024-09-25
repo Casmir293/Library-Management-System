@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\v1\BookController;
 use App\Http\Controllers\api\v1\AuthorController;
+use App\Http\Controllers\api\v1\RecordController;
 use App\Http\Controllers\api\v1\UserController;
 
 Route::get('/user', function (Request $request) {
@@ -36,6 +37,6 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('login', [UserController::class, 'login']);
 
     // Records Resource
-    Route::get('borrow-records', [UserController::class, 'index']);
-    Route::get('borrow-records/{id}', [UserController::class, 'show']);
+    Route::get('borrow-records', [RecordController::class, 'index']);
+    Route::get('borrow-records/{id}', [RecordController::class, 'show']);
 });
