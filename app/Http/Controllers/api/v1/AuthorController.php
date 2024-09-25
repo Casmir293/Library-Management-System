@@ -4,7 +4,7 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Models\Author;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreAuthorRequest;
+use App\Http\Requests\v1\StoreAuthorRequest;
 use App\Http\Requests\UpdateAuthorRequest;
 
 class AuthorController extends Controller
