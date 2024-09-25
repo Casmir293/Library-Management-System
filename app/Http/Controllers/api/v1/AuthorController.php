@@ -4,65 +4,55 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Models\Author;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\v1\AuthorResource;
+use App\Http\Requests\v1\UpdateAuthorRequest;
 use App\Http\Requests\v1\StoreAuthorRequest;
-use App\Http\Requests\UpdateAuthorRequest;
 
 class AuthorController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the author resource.
      */
     public function index()
     {
-        $authors = Author::all(); // Fetch all authors
-        return response()->json($authors);
+        $authors = Author::paginate();
+        return AuthorResource::collection($authors);
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a newly created author resource in storage (admin/librarian only).
      */
     public function store(StoreAuthorRequest $request)
     {
-        //
+        $author = Author::create($request->all());
+        return new AuthorResource($author);
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified author resource.
      */
-    public function show(Author $author)
+    public function show(Author $id)
     {
-        //
+        return new AuthorResource($id);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Update the specified author resource in storage (admin/librarian only).
      */
-    public function edit(Author $author)
+    public function update(UpdateAuthorRequest $request, $id)
     {
-        //
+        $author = Author::findOrFail($id);
+        $author->update($request->validated());
+        return new AuthorResource($author);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Remove the specified author resource from storage (admin only).
      */
-    public function update(UpdateAuthorRequest $request, Author $author)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Author $author)
-    {
-        //
+        $author = Author::findOrFail($id);
+        $author->delete();
+        return response()->json(['message' => 'Author deleted successfully']);
     }
 }

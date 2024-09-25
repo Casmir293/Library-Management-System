@@ -10,7 +10,6 @@ use App\Filters\v1\BookFilter;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\v1\BookResource;
-use App\Http\Resources\v1\BookCollection;
 use App\Http\Requests\v1\StoreBookRequest;
 use App\Http\Requests\v1\UpdateBookRequest;
 
@@ -25,15 +24,15 @@ class BookController extends Controller
         $queryItems = $filter->transform($request);
 
         if (count($queryItems) == 0) {
-            return new BookCollection(Book::paginate());
+            return BookResource::collection(Book::paginate());
         } else {
             $books = Book::where($queryItems)->paginate();
-            return new BookCollection($books->appends($request->query()));
+            return BookResource::collection($books->appends($request->query()));
         }
     }
 
     /**
-     * Store a newly created book resource in storage.
+     * Store a newly created book resource in storage (admin/librarian only).
      */
     public function store(StoreBookRequest $request)
     {
@@ -50,7 +49,7 @@ class BookController extends Controller
     }
 
     /**
-     * Update the specified book resource in storage.
+     * Update the specified book resource in storage (admin/librarian only).
      */
     public function update(UpdateBookRequest $request, $id)
     {
@@ -60,7 +59,7 @@ class BookController extends Controller
     }
 
     /**
-     * Remove the specified book resource from storage.
+     * Remove the specified book resource from storage (admin only).
      */
     public function destroy($id)
     {
@@ -70,7 +69,7 @@ class BookController extends Controller
     }
 
     /**
-     * Borrow the specified book resource from storage.
+     * Borrow the specified book resource from storage (member only).
      */
     public function borrowBook($id)
     {
@@ -92,7 +91,7 @@ class BookController extends Controller
     }
 
     /**
-     * Return the specified book resource in storage.
+     * Return the specified book resource in storage (member only).
      */
     public function returnBook($id)
     {

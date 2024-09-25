@@ -11,7 +11,7 @@ class StoreAuthorRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class StoreAuthorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'bio' => 'nullable|string',
+            'birthdate' => 'required|date',
         ];
     }
 }

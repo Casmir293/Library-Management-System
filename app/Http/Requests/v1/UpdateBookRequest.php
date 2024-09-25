@@ -21,24 +21,12 @@ class UpdateBookRequest extends FormRequest
      */
     public function rules(): array
     {
-        $method =  $this->method();
-
-        if ($method == 'PUT') {
-            return [
-                'title' => 'string|max:255',
-                'isbn' => 'string|unique:books,isbn,' . $this->route('id'),
-                'published_date' => 'date',
-                'author_id' => 'exists:authors,id',
-                'status' => 'in:Available,Borrowed',
-            ];
-        } else {
-            return [
-                'title' => 'sometimes|string|max:255',
-                'isbn' => 'sometimes|string|unique:books,isbn,' . $this->route('id'),
-                'published_date' => 'sometimes|date',
-                'author_id' => 'sometimes|exists:authors,id',
-                'status' => 'sometimes|in:Available,Borrowed',
-            ];
-        }
+        return [
+            'title' => 'sometimes|string|max:255',
+            'isbn' => 'sometimes|string|unique:books,isbn,' . $this->route('id'),
+            'published_date' => 'sometimes|date',
+            'author_id' => 'sometimes|exists:authors,id',
+            'status' => 'sometimes|in:Available,Borrowed',
+        ];
     }
 }

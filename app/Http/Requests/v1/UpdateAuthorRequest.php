@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\v1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -11,7 +11,7 @@ class UpdateAuthorRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,11 @@ class UpdateAuthorRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
-            //
+            'name' => 'sometimes|required|string|max:255',
+            'bio' => 'sometimes|nullable|string',
+            'birthdate' => 'sometimes|required|date',
         ];
     }
 }
