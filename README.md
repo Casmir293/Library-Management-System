@@ -1,6 +1,6 @@
 # Library Management API
 
-This is a RESTful API for a Library Management System built with Laravel. The API allows users to manage books, authors, and borrowing/returning records. It supports different roles such as Admin, Librarian, and Member, each with specific permissions.
+This is a RESTful API for a Library Management System built with Laravel. The API allows users to manage books, authors, and borrowing/returning records. It supports different roles such as Admin, Librarian, and Member, each with specific permissions. The documentation can be accessed live at [Library-Management Docs](https://documenter.getpostman.com/view/30346515/2sAXqy2K5W).
 
 ## Features
 
