@@ -11,32 +11,35 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::group(['prefix' => 'v1'], function () {
+Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function () {
+
     // Books Resource
     Route::get('books', [BookController::class, 'index']);
-    Route::post('books', [BookController::class, 'store']);
-    Route::post('books/{id}/borrow', [BookController::class, 'borrowBook']);
-    Route::post('books/{id}/return', [BookController::class, 'returnBook']);
+    Route::post('books', [BookController::class, 'store'])->middleware('staff');
+    Route::post('books/{id}/borrow', [BookController::class, 'borrowBook'])->middleware('member');
+    Route::post('books/{id}/return', [BookController::class, 'returnBook'])->middleware('member');
     Route::get('books/{id}', [BookController::class, 'show']);
-    Route::put('books/{id}', [BookController::class, 'update']);
-    Route::delete('books/{id}', [BookController::class, 'destroy']);
+    Route::put('books/{id}', [BookController::class, 'update'])->middleware('staff');
+    Route::delete('books/{id}', [BookController::class, 'destroy'])->middleware('admin');
 
     // Authors Resource
     Route::get('authors', [AuthorController::class, 'index']);
-    Route::post('authors', [AuthorController::class, 'store']);
+    Route::post('authors', [AuthorController::class, 'store'])->middleware('staff');
     Route::get('authors/{id}', [AuthorController::class, 'show']);
-    Route::put('authors/{id}', [AuthorController::class, 'update']);
-    Route::delete('authors/{id}', [AuthorController::class, 'destroy']);
+    Route::put('authors/{id}', [AuthorController::class, 'update'])->middleware('staff');
+    Route::delete('authors/{id}', [AuthorController::class, 'destroy'])->middleware('admin');
 
     // Users Resource
-    Route::get('users', [UserController::class, 'index']);
+    Route::get('users', [UserController::class, 'index'])->middleware('staff');
     Route::post('users', [UserController::class, 'store']);
-    Route::get('users/{id}', [UserController::class, 'show']);
+    Route::get('users/{id}', [UserController::class, 'show'])->middleware('admin');
     Route::put('users/{id}', [UserController::class, 'update']);
-    Route::delete('users/{id}', [UserController::class, 'destroy']);
-    Route::post('login', [UserController::class, 'login']);
+    Route::delete('users/{id}', [UserController::class, 'destroy'])->middleware('admin');
 
     // Records Resource
-    Route::get('borrow-records', [RecordController::class, 'index']);
-    Route::get('borrow-records/{id}', [RecordController::class, 'show']);
+    Route::get('borrow-records', [RecordController::class, 'index'])->middleware('staff');
+    Route::get('borrow-records/{id}', [RecordController::class, 'show'])->middleware('staff');
 });
+
+// Login Resource
+Route::post('v1/login', [UserController::class, 'login']);

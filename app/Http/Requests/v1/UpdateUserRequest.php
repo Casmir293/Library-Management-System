@@ -11,7 +11,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->user()->role === 'Admin' || auth()->user()->id == $this->route('id');
     }
 
     /**
@@ -23,7 +23,7 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|required|string|max:255',
-            // 'email' => 'sometimes|required|email|in:' . $this->user()->email,
+            'email' => 'sometimes|required|email|in:' . $this->user()->email,
             'password' => 'sometimes|required|string|min:6',
             'role' => 'sometimes|required|in:Admin,Librarian,Member',
         ];

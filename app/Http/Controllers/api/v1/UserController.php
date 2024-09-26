@@ -78,7 +78,20 @@ class UserController extends Controller
 
         if (auth()->attempt($credentials)) {
             $user = auth()->user();
-            return new UserResource($user);
+            $token = null;
+
+            if ($user->role == 'Admin') {
+                $token = $user->createToken('admin-token', ['admin'])->plainTextToken;
+            } elseif ($user->role == 'Librarian') {
+                $token = $user->createToken('librarian-token', ['librarian'])->plainTextToken;
+            } elseif ($user->role == 'Member') {
+                $token = $user->createToken('member-token', ['member'])->plainTextToken;
+            }
+
+            return response()->json([
+                'user' => new UserResource($user),
+                'token' => $token,
+            ]);
         } else {
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
