@@ -35,11 +35,12 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function () {
 
     // Users Resource
     Route::get('users', [UserController::class, 'index'])->middleware('staff');
-    Route::post('users', [UserController::class, 'store']);
+    // Route::post('users', [UserController::class, 'store']);
     Route::get('users/{id}', [UserController::class, 'show'])->middleware('admin');
     Route::put('users/{id}', [UserController::class, 'update']);
     Route::delete('users/{id}', [UserController::class, 'destroy'])->middleware('admin');
     Route::post('logout', [UserController::class, 'logout']);
 });
 
+Route::post('v1/users', [UserController::class, 'store']);
 Route::post('v1/login', [UserController::class, 'login']);
