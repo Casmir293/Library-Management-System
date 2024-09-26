@@ -29,17 +29,17 @@ Route::group(['prefix' => 'v1', 'middleware' => 'auth:sanctum'], function () {
     Route::put('authors/{id}', [AuthorController::class, 'update'])->middleware('staff');
     Route::delete('authors/{id}', [AuthorController::class, 'destroy'])->middleware('admin');
 
+    // Records Resource
+    Route::get('borrow-records', [RecordController::class, 'index'])->middleware('staff');
+    Route::get('borrow-records/{id}', [RecordController::class, 'show'])->middleware('staff');
+
     // Users Resource
     Route::get('users', [UserController::class, 'index'])->middleware('staff');
     Route::post('users', [UserController::class, 'store']);
     Route::get('users/{id}', [UserController::class, 'show'])->middleware('admin');
     Route::put('users/{id}', [UserController::class, 'update']);
     Route::delete('users/{id}', [UserController::class, 'destroy'])->middleware('admin');
-
-    // Records Resource
-    Route::get('borrow-records', [RecordController::class, 'index'])->middleware('staff');
-    Route::get('borrow-records/{id}', [RecordController::class, 'show'])->middleware('staff');
+    Route::post('logout', [UserController::class, 'logout']);
 });
 
-// Login Resource
 Route::post('v1/login', [UserController::class, 'login']);

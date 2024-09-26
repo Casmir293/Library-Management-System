@@ -78,6 +78,7 @@ class UserController extends Controller
 
         if (auth()->attempt($credentials)) {
             $user = auth()->user();
+            $user->tokens()->delete();
             $token = null;
 
             if ($user->role == 'Admin') {
@@ -95,5 +96,13 @@ class UserController extends Controller
         } else {
             return response()->json(['error' => 'Invalid credentials'], 401);
         }
+    }
+
+    /**
+     * Logout the authenticated user.
+     */
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
     }
 }

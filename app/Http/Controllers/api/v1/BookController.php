@@ -20,15 +20,32 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        $filter  = new BookFilter();
+        $title = $request->input('title');
+        $author = $request->input('author');
+        $isbn = $request->input('isbn');
+
+        $filter = new BookFilter();
         $queryItems = $filter->transform($request);
 
-        if (count($queryItems) == 0) {
-            return BookResource::collection(Book::paginate());
-        } else {
-            $books = Book::where($queryItems)->paginate();
-            return BookResource::collection($books->appends($request->query()));
+        $query = Book::query();
+
+        if ($title) {
+            $query->where('title', 'like', "%$title%");
         }
+        if ($author) {
+            $query->whereHas('author', function ($q) use ($author) {
+                $q->where('name', 'like', "%$author%");
+            });
+        }
+        if ($isbn) {
+            $query->where('isbn', $isbn);
+        }
+        if (count($queryItems) > 0) {
+            $query->where($queryItems);
+        }
+
+        $books = $query->paginate()->appends($request->query());
+        return BookResource::collection($books);
     }
 
     /**
