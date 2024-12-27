@@ -2,6 +2,7 @@
 
 use Illuminate\Foundation\Application;
 use App\Http\Middleware\v1\AdminMiddleware;
+use App\Http\Middleware\v1\GeneralApiKeyMiddleware;
 use App\Http\Middleware\v1\StaffMiddleware;
 use App\Http\Middleware\v1\MemberMiddleware;
 use App\Http\Middleware\v1\LibrarianMiddleware;
@@ -20,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->appendToGroup('librarian', [LibrarianMiddleware::class]);
         $middleware->appendToGroup('member', [MemberMiddleware::class]);
         $middleware->appendToGroup('staff', [StaffMiddleware::class]);
+        $middleware->appendToGroup('apiKey', [GeneralApiKeyMiddleware::class]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
